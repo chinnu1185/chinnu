@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("images/bg.jpeg"); /* Add your wrapped paper texture image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 90%;
+            height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo {
+            position: absolute;
+            width: 250px; /* Decreased size */
+            height: 250px; /* Decreased size */
+            border-radius: 15px; /* Curved edges */
+            border: 5px solid white; /* Frame */
+            cursor: grab;
+            user-select: none;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            z-index: 1; /* Ensure images are above the message */
+            opacity: 0; /* Initially invisible */
+            transform: translate(0, 100vh); /* Start from bottom of the screen */
+            animation: snakeEnter 2s ease forwards; /* Slower snake-like animation */
+        }
+
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Pacifico', cursive;
+            font-size: 5rem;
+            text-align: center;
+            color: transparent;
+            background: linear-gradient(135deg, #ff7eb3, #ff758c); /* Gradient with two colors */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: none;
+            z-index: 0; /* Ensure the message is behind images */
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 3rem;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-30px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes snakeEnter {
+            0% {
+                opacity: 0;
+                transform: translate(0, 100vh); /* Start from the bottom */
+            }
+            25% {
+                transform: translate(25vw, 75vh); /* Snake-like curve */
+            }
+            50% {
+                transform: translate(-25vw, 50vh); /* Moving diagonally */
+            }
+            75% {
+                transform: translate(-50vw, 25vh); /* Curving towards center */
+            }
+            100% {
+                transform: translate(0, 0); /* Final position at the center */
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="images/562.jpg" alt="562" class="photo" style="top: 50%; left: 45%; transform: translate(-50%, -50%);">
+        <img src="images/563.jpg" alt="563" class="photo" style="top: 52%; left: 47%; transform: translate(-50%, -50%);">
+        <img src="images/564.jpg" alt="564" class="photo" style="top: 48%; left: 43%; transform: translate(-50%, -50%);">
+        <img src="images/565.jpg" alt="565" class="photo" style="top: 50%; left: 49%; transform: translate(-50%, -50%);">
+        <img src="images/566.jpg" alt="566" class="photo" style="top: 51%; left: 46%; transform: translate(-50%, -50%);">
+
+        <!-- Floating Emojis -->
+        <div class="floating-emoji" style="top: 10%; left: 10%;">🎈</div>
+        <div class="floating-emoji" style="top: 20%; left: 80%;">🎉</div>
+        <div class="floating-emoji" style="top: 50%; left: 30%;">🎂</div>
+        <div class="floating-emoji" style="top: 60%; left: 50%;">🎁</div>
+        <div class="floating-emoji" style="top: 35%; left: 25%;">✨</div>
+        <div class="floating-emoji" style="top: 40%; left: 75%;">🌟</div>
+        <div class="floating-emoji" style="top: 15%; left: 55%;">💖</div>
+        <div class="floating-emoji" style="top: 70%; left: 20%;">🎊</div>
+        <div class="floating-emoji" style="top: 5%; left: 85%;">💫</div>
+        <div class="floating-emoji" style="top: 25%; left: 35%;">🎀</div>
+        <div class="floating-emoji" style="top: 10%; left: 20%;">🌈</div>
+        <div class="floating-emoji" style="top: 30%; left: 90%;">🍭</div>
+        <div class="floating-emoji" style="top: 80%; left: 70%;">🌸</div>
+        <div class="floating-emoji" style="top: 65%; left: 15%;">🎆</div>
+        <div class="floating-emoji" style="top: 50%; left: 80%;">🎇</div>
+        <div class="floating-emoji" style="top: 5%; left: 50%;">🎵</div>
+        <div class="floating-emoji" style="top: 75%; left: 40%;">🎶</div>
+    </div>
+
+    <div class="message">Happy Birthday! SHYLU 🎉🎂</div>
+
+    <script>
+        document.querySelectorAll('.photo').forEach(photo => {
+            photo.addEventListener('mousedown', startDrag);
+        });
+
+        let draggedPhotos = 0;
+
+        function startDrag(e) {
+            const photo = e.target;
+            let offsetX = e.clientX - photo.offsetLeft;
+            let offsetY = e.clientY - photo.offsetTop;
+
+            function moveAt(event) {
+                photo.style.left = event.clientX - offsetX + 'px';
+                photo.style.top = event.clientY - offsetY + 'px';
+            }
+
+            function stopDrag() {
+                document.removeEventListener('mousemove', moveAt);
+                document.removeEventListener('mouseup', stopDrag);
+
+                photo.style.cursor = 'grab';
+
+                draggedPhotos++;
+                if (draggedPhotos === document.querySelectorAll('.photo').length) {
+                    document.querySelector('.message').style.display = 'block';
+                }
+            }
+
+            document.addEventListener('mousemove', moveAt);
+            document.addEventListener('mouseup', stopDrag);
+
+            photo.style.cursor = 'grabbing';
+        }
+    </script>
+</body>
+</html>
